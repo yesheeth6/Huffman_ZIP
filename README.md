@@ -33,4 +33,6 @@ HuffEncode is a web-based tool for compressing text files using Huffman coding, 
 6. You will get the Huffman codes along with the encoded text document
 
     ![alt text](image-1.png)
+
+    ![alt text](image-2.png)
 # The End
