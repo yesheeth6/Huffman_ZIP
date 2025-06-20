@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huffman File Encoder</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <style>
+        /* General Styling */
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f9f9f9, #c1d3fe);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 5% auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: fadeIn 1.2s ease-in-out;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 20px 0;
+            color: #4c669f;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        input[type="file"] {
+            margin: 10px 0;
+            padding: 10px;
+            border: 2px dashed #4c669f;
+            border-radius: 8px;
+            background: #e0ebff;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            background-color: #4c669f;
+            color: #fff;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #37559c;
+            transform: translateY(-3px);
+        }
+
+        #result {
+            margin: 20px;
+            padding: 20px;
+            min-height: 200px;
+            border: 2px solid #4c669f;
+            border-radius: 12px;
+            background: #f7faff;
+            font-size: 1rem;
+            color: #333;
+            animation: slideUp 1.2s ease-in-out;
+        }
+
+        /* Footer Styling */
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #4c669f;
+            color: white;
+            font-size: 0.9rem;
+            margin-top: auto;
+            box-shadow: 0px -4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        footer a {
+            color: #e0ebff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Huffman File Encoder</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".txt" required>
+            <button type="button" id="uploadBtn">Upload and Encode</button>
+        </form>
+        <div id="result">Output will be displayed here.</div>
+    </div>
+    <footer>
+        © 2025 Huffman File Encoder | Made by <a href="https://github.com/yesheeth6">Yesheeth</a>
+    </footer>
+    <script>
+        document.getElementById('uploadBtn').addEventListener('click', () => {
+            const formData = new FormData(document.getElementById('uploadForm'));
+            fetch('/upload', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    document.getElementById('result').innerHTML = `
+                        <p><strong>Message:</strong> ${data.message}</p>
+                        <p><strong>Download Encoded File:</strong> 
+                            <a href="${data.encoded_file}" download>Download</a>
+                        </p>
+                        <p><strong>Huffman Codes:</strong></p>
+                        <ul>
+                            ${Object.entries(data.huffman_codes).map(([char, code]) => `
+                                <li><strong>${char || '[Space]'}:</strong> ${code}</li>
+                            `).join('')}
+                        </ul>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').textContent = 'An error occurred. Please try again.';
+            });
+        });
+    </script>
+</body>
+</html>
