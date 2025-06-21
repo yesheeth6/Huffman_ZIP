@@ -1,5 +1,5 @@
 # Huffman_ZIP
-Huffman_ZIP is a web-based tool for compressing text files using Huffman coding, a powerful lossless data compression algorithm. Upload a .txt file, and HuffEncode generates a compressed version with detailed Huffman codes for each character. With a sleek interface and efficient backend, it’s perfect for students, developers, or anyone exploring data compression techniques.
+"Huffman_ZIP is an innovative web-based tool designed to make text compression and decompression accessible and efficient. Utilizing the power of Huffman coding, a renowned lossless data compression algorithm, it allows users to upload a .txt file, generate a compressed version, and view detailed Huffman codes for each character in the input. The tool also features seamless decompression, enabling users to decode previously encoded files back to their original content. With its intuitive interface and robust backend, Huffman_ZIP is perfect for students, developers, and data enthusiasts interested in exploring the fundamentals of data compression."
 
 ## Features  
 - **File Compression**: Encode `.txt` files using Huffman coding for efficient storage.  
