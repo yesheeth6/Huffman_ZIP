@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Huffman File Encoder</title>
+    <title>Huffman File Encoder and Decoder</title>
     <link rel="stylesheet" href="/static/style.css">
     <style>
         /* General Styling */
@@ -61,6 +61,7 @@
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
+            margin: 10px 0;
         }
 
         button:hover {
@@ -71,7 +72,7 @@
         #result {
             margin: 20px;
             padding: 20px;
-            min-height: 200px;
+            min-height: 80px;
             border: 2px solid #4c669f;
             border-radius: 12px;
             background: #f7faff;
@@ -127,16 +128,18 @@
 </head>
 <body>
     <div class="container">
-        <h1>Huffman File Encoder</h1>
+        <h1>Huffman File Encoder and Decoder</h1>
         <form id="uploadForm" enctype="multipart/form-data">
             <input type="file" name="file" accept=".txt" required>
             <button type="button" id="uploadBtn">Upload and Encode</button>
         </form>
+        <form id="decodeForm" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".txt" required>
+            <button type="button" id="decodeBtn">Upload and Decode</button>
+        </form>
         <div id="result">Output will be displayed here.</div>
     </div>
-    <footer>
-        © 2025 Huffman File Encoder | Made by <a href="https://github.com/yesheeth6">Yesheeth</a>
-    </footer>
+    
     <script>
         document.getElementById('uploadBtn').addEventListener('click', () => {
             const formData = new FormData(document.getElementById('uploadForm'));
@@ -152,12 +155,29 @@
                         <p><strong>Download Encoded File:</strong> 
                             <a href="${data.encoded_file}" download>Download</a>
                         </p>
-                        <p><strong>Huffman Codes:</strong></p>
-                        <ul>
-                            ${Object.entries(data.huffman_codes).map(([char, code]) => `
-                                <li><strong>${char || '[Space]'}:</strong> ${code}</li>
-                            `).join('')}
-                        </ul>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').textContent = 'An error occurred. Please try again.';
+            });
+        });
+
+        document.getElementById('decodeBtn').addEventListener('click', () => {
+            const formData = new FormData(document.getElementById('decodeForm'));
+            fetch('/decode', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    document.getElementById('result').innerHTML = `
+                        <p><strong>Message:</strong> ${data.message}</p>
+                        <p><strong>Download Decoded File:</strong> 
+                            <a href="${data.decoded_file}" download>Download</a>
+                        </p>
                     `;
                 }
             })
@@ -168,4 +188,8 @@
         });
     </script>
 </body>
+<footer>
+        © 2025 Huffman File Encoder and Decoder | Made by <a href="https://github.com/yesheeth6">Yesheeth</a>
+</footer>
 </html>
+
